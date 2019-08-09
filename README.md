@@ -2,7 +2,9 @@
 
 My implementation for doing async map with limit on concurrency.
 
-Tried several implementations, the biggest performance leap so far came from not using concat
+`impl.js` contains my experiments in making this fast
+
+`bench` compares them using two different benchmark modules
 
 ```js
 const map = require('@kessler/async-map-limit')
