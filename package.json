@@ -1,0 +1,33 @@
+{
+  "name": "@kessler/async-map-limit",
+  "private": false,
+  "version": "1.0.0",
+  "description": "like Promise.all() but with limit on concurrency",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx ava test.js",
+    "bench1": "node ./bench/bench1",
+    "bench2": "node ./bench/bench2",
+    "bench": "node ./bench/bench1; echo '==============\n'; node ./bench/bench2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kessler/node-async-map-limit.git"
+  },
+  "keywords": [
+    "async",
+    "map"
+  ],
+  "author": "Yaniv Kessler",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/kessler/node-async-map-limit/issues"
+  },
+  "homepage": "https://github.com/kessler/node-async-map-limit#readme",
+  "devDependencies": {
+    "ava": "^2.2.0",
+    "bench": "^0.3.6",
+    "benchmarkify": "^2.1.2",
+    "random-js": "^2.1.0"
+  }
+}
