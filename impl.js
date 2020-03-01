@@ -11,7 +11,7 @@ async function mapLimitAnyIterableNoConcat(items, mapper, limit) {
 
 	for (let item of items) {
 		work.push(mapper(item))
-		if (counter++ === limit) {
+		if (++counter === limit) {
 			(await Promise.all(work)).forEach(item => result.push(item))
 			counter = 0
 			work = []
@@ -32,7 +32,7 @@ async function mapLimitAnyIterable(items, mapper, limit) {
 
 	for (let item of items) {
 		work.push(mapper(item))
-		if (counter++ === limit) {
+		if (++counter === limit) {
 			result = result.concat(await Promise.all(work))
 			counter = 0
 			work = []

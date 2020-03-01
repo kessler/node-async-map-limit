@@ -1,0 +1,101 @@
+
+> @kessler/async-map-limit@1.0.0 bench 
+> node ./bench/bench1; echo '==============
+'; node ./bench/bench2
+
+=============
+  async map  
+=============
+
+Platform info:
+==============
+   Darwin 16.7.0 x64
+   Node.JS: 12.9.1
+   V8: 7.6.303.29-node.15
+   Intel(R) Core(TM) i5-5287U CPU @ 2.90GHz × 4
+
+Suite: async mapping
+
+   mapLimit on any iterable without concat* (#)                    0%            (172 rps)   (avg: 5ms)
+   mapLimit on any iterable*                                  -57.94%             (72 rps)   (avg: 13ms)
+   mapLimit will iterate over work chunk*                     -58.38%             (71 rps)   (avg: 13ms)
+   mapLimit will iterate over work chunk without concat*       -4.58%            (164 rps)   (avg: 6ms)
+   mapLimit will slice a work chunk*                          -59.24%             (70 rps)   (avg: 14ms)
+-----------------------------------------------------------------------
+
+==============
+
+benchmarking bench2.js
+Please be patient.
+{
+  node: '12.9.1',
+  v8: '7.6.303.29-node.15',
+  uv: '1.31.0',
+  zlib: '1.2.11',
+  brotli: '1.0.7',
+  ares: '1.15.0',
+  modules: '72',
+  nghttp2: '1.39.2',
+  napi: '4',
+  llhttp: '1.1.4',
+  http_parser: '2.8.0',
+  openssl: '1.1.1c',
+  cldr: '35.1',
+  icu: '64.2',
+  tz: '2019a',
+  unicode: '12.1'
+}
+Scores: (bigger is better)
+
+mapLimit on any iterable without concat
+Raw:
+ > 1.6633466135458168
+ > 1.5768463073852295
+ > 1.6467065868263473
+ > 1.656686626746507
+Average (mean) 1.6358965336259752
+
+mapLimit will iterate over work chunk without concat
+Raw:
+ > 1.543824701195219
+ > 1.5338645418326693
+ > 1.2674650698602794
+ > 1.5537848605577689
+Average (mean) 1.4747347933614843
+
+mapLimit on any iterable
+Raw:
+ > 0.7377866400797607
+ > 0.7646474677259185
+ > 0.736318407960199
+ > 0.7403751233958539
+Average (mean) 0.7447819097904329
+
+mapLimit will slice a work chunk
+Raw:
+ > 0.7149950347567031
+ > 0.7192807192807192
+ > 0.7071713147410359
+ > 0.751730959446093
+Average (mean) 0.7232945070561377
+
+mapLimit will iterate over work chunk
+Raw:
+ > 0.6937561942517344
+ > 0.7149950347567031
+ > 0.7135777998017839
+ > 0.7234886025768087
+Average (mean) 0.7114544078467575
+
+Winner: mapLimit on any iterable without concat
+Compared with next highest (mapLimit will iterate over work chunk without concat), it's:
+9.85% faster
+1.11 times as fast
+0.05 order(s) of magnitude faster
+A LITTLE FASTER
+
+Compared with the slowest (mapLimit will iterate over work chunk), it's:
+56.51% faster
+2.3 times as fast
+0.36 order(s) of magnitude faster
+

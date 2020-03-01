@@ -1,8 +1,8 @@
 # @kessler/async-map-limit
 
-My implementation for doing async map with limit on concurrency.
+A `Promise.all()` based implementation for doing async map with limit on concurrency.
 
-`impl.js` contains my experiments in making this fast
+`impl.js` contains my experiments with various methods to do it.
 
 `bench` compares them using two different benchmark modules
 
