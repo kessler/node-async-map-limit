@@ -12,6 +12,11 @@ const items5 = generateItems(WORK_SIZE)
 
 module.exports = {
 
+	'mapLimit on any iterable with "real" concurrency': async (done) => {
+		await impl.anyIterableConcurrent(items2, asyncMapper, CONCURRENCY_LIMIT)
+		done()
+	},
+
 	'mapLimit on any iterable without concat': async (done) => {
 		await impl.anyIterableNoConcat(items2, asyncMapper, CONCURRENCY_LIMIT)
 		done()

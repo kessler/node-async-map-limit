@@ -1,8 +1,45 @@
+module.exports.anyIterableConcurrent = mapLimitAnyIterableConcurrent
 module.exports.anyIterableNoConcat = mapLimitAnyIterableNoConcat
 module.exports.anyIterable = mapLimitAnyIterable
 module.exports.sliceWorkChunk = mapLimitSliceWorkChunk
 module.exports.iterateWorkChunk = mapLimitIterateWorkChunk
 module.exports.iterateWorkChunkNoConcat = mapLimitIterateWorkChunkNoConcat
+
+async function mapLimitAnyIterableConcurrent(items, mapper, limit) {
+	if (Array.isArray(items)) {
+		items = items.values()
+	}
+
+	let concurrentOps = 0
+	let position = 0
+	let finished = false
+	const map = []
+	
+	return new Promise(res => {
+		const dispatch = async () => {
+			const { done, value } = items.next()
+			if (done) {
+				finished = true
+				if (concurrentOps === 0 && position === 0) return res(map)
+				return
+			}
+
+			// its important to increment before the async operation
+			const myPosition = position++
+			concurrentOps++
+			const mapResult = await mapper(value)
+			map[myPosition] = mapResult
+			if (--concurrentOps < limit && !finished) dispatch()
+			if (finished && concurrentOps === 0) {
+				return res(map)
+			}
+		}
+
+		for (let i = 0; i < limit && !finished; i++) {
+			dispatch()
+		}
+	})
+}
 
 async function mapLimitAnyIterableNoConcat(items, mapper, limit) {
 	let result = []

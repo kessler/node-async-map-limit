@@ -29,5 +29,6 @@
     "bench": "^0.3.6",
     "benchmarkify": "^2.1.2",
     "random-js": "^2.1.0"
-  }
+  },
+  "dependencies": {}
 }

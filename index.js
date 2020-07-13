@@ -1,1 +1,1 @@
-module.exports = require('./impl').anyIterableNoConcat
+module.exports = require('./impl').anyIterableConcurrent
