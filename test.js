@@ -13,6 +13,14 @@ for (let implName in impl) {
 }
 
 for (let implName in impl) {
+	test(`long operation in the middle (${implName})`, async (t) => {
+		const arr = [1, 2, 3, 4, 5, 6, 7, 8]
+		const result = await impl[implName](arr, asyncMapperLong, 4)
+		t.deepEqual(arr, result)
+	})
+}
+
+for (let implName in impl) {
 	test(`when concurrency is set to 1 then the execution is serial (${implName})`, async (t) => {
 		const mutex = { isRunning: false }
 		const arr = [1, 2, 3, 4, 5, 7, 8]
@@ -30,12 +38,20 @@ for (let implName in impl) {
 	})
 }
 
-
 function asyncMapper(value) {
 	return new Promise((resolve) => {
 		setTimeout(() => {
 			resolve(value)
 		}, random.integer(10, 600))
+	})
+}
+
+function asyncMapperLong(value) {
+	if (value !== 5) return asyncMapper(value)
+	return new Promise((resolve) => {
+		setTimeout(() => {
+			resolve(value)
+		}, 2000)
 	})
 }
 

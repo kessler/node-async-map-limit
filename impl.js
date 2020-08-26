@@ -14,13 +14,13 @@ async function mapLimitAnyIterableConcurrent(items, mapper, limit) {
 	let position = 0
 	let finished = false
 	const map = []
-	
+
 	return new Promise(res => {
 		const dispatch = async () => {
 			const { done, value } = items.next()
 			if (done) {
-				finished = true
-				if (concurrentOps === 0 && position === 0) return res(map)
+				finished = done
+				if (concurrentOps === 0) return res(map)
 				return
 			}
 
@@ -28,11 +28,11 @@ async function mapLimitAnyIterableConcurrent(items, mapper, limit) {
 			const myPosition = position++
 			concurrentOps++
 			const mapResult = await mapper(value)
-			map[myPosition] = mapResult
-			if (--concurrentOps < limit && !finished) dispatch()
-			if (finished && concurrentOps === 0) {
-				return res(map)
+			if (mapResult) {
+				map[myPosition] = mapResult
 			}
+			concurrentOps--
+			dispatch()
 		}
 
 		for (let i = 0; i < limit && !finished; i++) {
