@@ -1,7 +1,7 @@
 {
   "name": "@kessler/async-map-limit",
   "private": false,
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "like Promise.all() but with limit on concurrency",
   "main": "index.js",
   "scripts": {
