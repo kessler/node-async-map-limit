@@ -25,10 +25,9 @@
   },
   "homepage": "https://github.com/kessler/node-async-map-limit#readme",
   "devDependencies": {
-    "ava": "^2.4.0",
+    "ava": "^6.1.3",
     "bench": "^0.3.6",
     "benchmarkify": "^2.1.2",
     "random-js": "^2.1.0"
-  },
-  "dependencies": {}
+  }
 }

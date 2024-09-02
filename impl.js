@@ -6,6 +6,10 @@ module.exports.iterateWorkChunk = mapLimitIterateWorkChunk
 module.exports.iterateWorkChunkNoConcat = mapLimitIterateWorkChunkNoConcat
 
 async function mapLimitAnyIterableConcurrent(items, mapper, limit) {
+	if (typeof limit !== 'number') {
+		throw new Error('must provide limit argument')
+	}
+
 	if (Array.isArray(items)) {
 		items = items.values()
 	}
@@ -42,6 +46,10 @@ async function mapLimitAnyIterableConcurrent(items, mapper, limit) {
 }
 
 async function mapLimitAnyIterableNoConcat(items, mapper, limit) {
+	if (typeof limit !== 'number') {
+		throw new Error('must provide limit argument')
+	}
+
 	let result = []
 	let work = []
 	let counter = 0
@@ -63,6 +71,10 @@ async function mapLimitAnyIterableNoConcat(items, mapper, limit) {
 }
 
 async function mapLimitAnyIterable(items, mapper, limit) {
+	if (typeof limit !== 'number') {
+		throw new Error('must provide limit argument')
+	}
+
 	let result = []
 	let work = []
 	let counter = 0
@@ -84,6 +96,10 @@ async function mapLimitAnyIterable(items, mapper, limit) {
 }
 
 async function mapLimitIterateWorkChunkNoConcat(items, mapper, limit) {
+	if (typeof limit !== 'number') {
+		throw new Error('must provide limit argument')
+	}
+
 	const result = []
 
 	for (let x = 0; x < items.length; x += limit) {
@@ -108,6 +124,10 @@ async function mapLimitIterateWorkChunkNoConcat(items, mapper, limit) {
 }
 
 async function mapLimitIterateWorkChunk(items, mapper, limit) {
+	if (typeof limit !== 'number') {
+		throw new Error('must provide limit argument')
+	}
+
 	let result = []
 
 	for (let x = 0; x < items.length; x += limit) {
@@ -128,6 +148,10 @@ async function mapLimitIterateWorkChunk(items, mapper, limit) {
 }
 
 async function mapLimitSliceWorkChunk(items, mapper, limit) {
+	if (typeof limit !== 'number') {
+		throw new Error('must provide limit argument')
+	}
+	
 	let result = []
 
 	for (let x = 0; x < items.length; x += limit) {
