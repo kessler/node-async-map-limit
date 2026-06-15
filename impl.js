@@ -6,37 +6,47 @@ module.exports.iterateWorkChunk = mapLimitIterateWorkChunk
 module.exports.iterateWorkChunkNoConcat = mapLimitIterateWorkChunkNoConcat
 
 async function mapLimitAnyIterableConcurrent(items, mapper, limit) {
-	if (typeof limit !== 'number') {
-		throw new Error('must provide limit argument')
+	if (!Number.isInteger(limit) || limit < 1) {
+		throw new Error('limit must be an integer greater than 0')
 	}
 
-	if (Array.isArray(items)) {
-		items = items.values()
-	}
+	// Accept any iterable (Array, Set, Map, generator, ...) by taking its
+	// iterator. Fall back to items itself for a bare iterator (has next() but
+	// no Symbol.iterator).
+	const iterator = typeof items[Symbol.iterator] === 'function'
+		? items[Symbol.iterator]()
+		: items
 
 	let concurrentOps = 0
 	let position = 0
 	let finished = false
+	let errored = false
 	const map = []
 
-	return new Promise(res => {
+	return new Promise((res, rej) => {
 		const dispatch = async () => {
-			const { done, value } = items.next()
-			if (done) {
-				finished = done
-				if (concurrentOps === 0) return res(map)
-				return
-			}
+			if (errored) return
 
-			// its important to increment before the async operation
-			const myPosition = position++
-			concurrentOps++
-			const mapResult = await mapper(value)
-			if (mapResult) {
-				map[myPosition] = mapResult
+			try {
+				const { done, value } = iterator.next()
+				if (done) {
+					finished = true
+					if (concurrentOps === 0) return res(map)
+					return
+				}
+
+				// its important to increment before the async operation
+				const myPosition = position++
+				concurrentOps++
+				map[myPosition] = await mapper(value)
+				concurrentOps--
+				dispatch()
+			} catch (err) {
+				// a synchronous throw from iterator.next()/mapper, or a rejected
+				// mapper promise: surface it to the caller instead of swallowing.
+				errored = true
+				rej(err)
 			}
-			concurrentOps--
-			dispatch()
 		}
 
 		for (let i = 0; i < limit && !finished; i++) {
@@ -46,8 +56,8 @@ async function mapLimitAnyIterableConcurrent(items, mapper, limit) {
 }
 
 async function mapLimitAnyIterableNoConcat(items, mapper, limit) {
-	if (typeof limit !== 'number') {
-		throw new Error('must provide limit argument')
+	if (!Number.isInteger(limit) || limit < 1) {
+		throw new Error('limit must be an integer greater than 0')
 	}
 
 	let result = []
@@ -71,8 +81,8 @@ async function mapLimitAnyIterableNoConcat(items, mapper, limit) {
 }
 
 async function mapLimitAnyIterable(items, mapper, limit) {
-	if (typeof limit !== 'number') {
-		throw new Error('must provide limit argument')
+	if (!Number.isInteger(limit) || limit < 1) {
+		throw new Error('limit must be an integer greater than 0')
 	}
 
 	let result = []
@@ -96,8 +106,8 @@ async function mapLimitAnyIterable(items, mapper, limit) {
 }
 
 async function mapLimitIterateWorkChunkNoConcat(items, mapper, limit) {
-	if (typeof limit !== 'number') {
-		throw new Error('must provide limit argument')
+	if (!Number.isInteger(limit) || limit < 1) {
+		throw new Error('limit must be an integer greater than 0')
 	}
 
 	const result = []
@@ -124,8 +134,8 @@ async function mapLimitIterateWorkChunkNoConcat(items, mapper, limit) {
 }
 
 async function mapLimitIterateWorkChunk(items, mapper, limit) {
-	if (typeof limit !== 'number') {
-		throw new Error('must provide limit argument')
+	if (!Number.isInteger(limit) || limit < 1) {
+		throw new Error('limit must be an integer greater than 0')
 	}
 
 	let result = []
@@ -148,8 +158,8 @@ async function mapLimitIterateWorkChunk(items, mapper, limit) {
 }
 
 async function mapLimitSliceWorkChunk(items, mapper, limit) {
-	if (typeof limit !== 'number') {
-		throw new Error('must provide limit argument')
+	if (!Number.isInteger(limit) || limit < 1) {
+		throw new Error('limit must be an integer greater than 0')
 	}
 	
 	let result = []
